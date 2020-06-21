@@ -34,7 +34,7 @@
               @input="checkOutHandler($event)"
               locale="en-US"
               :masks="{ weekdays: 'WW', L: 'YYYY - MM - DD' }"
-              :available-dates='{ start: useCalculateDays(checkIn), end: null }'
+              :available-dates='{ start: useCalculateDays(checkIn, checkOut), end: null }'
             )
             p.days {{ selectedPeriodOfDays }}天，{{ normalDays }}晚平日
             div.price
@@ -78,7 +78,8 @@
 import { mapActions, mapGetters } from "vuex";
 import { 
   calculateDays,
-  calculatePeriodOfDays
+  calculatePeriodOfDays,
+  periodOfDays
 } from '@/assets/utils/dateConvertor.js';
 import {
   formatCurrency
@@ -155,8 +156,12 @@ export default {
     checkInHandler(date) {
       this.$emit('propBookingPopupDateHandler', 'checkIn', date);
     },
-    useCalculateDays(date) {
-      return calculateDays(date, 1);
+    useCalculateDays(checkIn, checkOut) {
+      if (!checkOut) return calculateDays(checkIn, 1);
+      else {
+        const num = periodOfDays(checkIn, checkOut);
+        return calculateDays(checkIn, num);
+      }
     },
     emitBookingFormHandler() {
       const date = calculatePeriodOfDays(this.start, this.end);
