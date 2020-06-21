@@ -9,14 +9,17 @@ export const calculatePrice = (holidayDayPrice, normalDayPrice) => {
     : holidayDayPrice + normalDayPrice 
 };
 
-export const calculateRoomPrice = (dayType, cost, seleted) => {
-  return seleted.reduce((total, day) => {
-    let isSelectedNormal = dayType.some(selected => selected == day);
-    if (!isSelectedNormal) return total;
-
-    total += cost;
-    return total;
-  }, 0);
+export const calculateRoomPrice = (dayType, cost, selected) => {
+    // 取得 selected 長度 - 1 的價錢
+    let allDaysPrices =  selected.reduce((total, day, index) => {
+      let isSelectedNormal = dayType.some(selected => selected == day);
+      const lastIndex = selected.length - 1;
+      if (!isSelectedNormal || index == lastIndex) return total;
+      
+      total += cost;
+      return total;
+    }, 0);
+    return allDaysPrices;
 };
   
 export const getSelectedDays = (start, end) => {

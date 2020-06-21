@@ -232,7 +232,7 @@ export default {
       bookingRoomFail: "bookingRoomFail"
     }),
     getPeriodOfDays() {
-      return periodOfDays(this.range.start, this.range.end);
+      return periodOfDays(this.range.start, this.range.end) - 1;
     },
     totalPrice() {
       const selectedDays = getSelectedDays(this.range.start, this.range.end);

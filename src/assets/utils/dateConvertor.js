@@ -24,7 +24,7 @@ export const periodOfDays = (firstDay, secondDay) => {
   const firstTimestamp = new Date(firstDay).getTime();
   const secondTimestamp = new Date(secondDay).getTime();
   const period = (secondTimestamp - firstTimestamp) / TIMESTAMP;
-  return parseInt(period);
+  return parseInt(period + 1);
 }
 
 export const formateDate = date => dayjs(date).format('YYYY-MM-DD');
