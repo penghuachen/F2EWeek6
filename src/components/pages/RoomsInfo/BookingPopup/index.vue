@@ -183,7 +183,7 @@ export default {
     }),
     totalPrice() {
       if(!this.normalDayCost || !this.holidayCost) return;
-      const selectedDays = getSelectedDays(this.start, this.end);
+      const selectedDays = getSelectedDays(this.checkIn, this.checkOut);
       const normalDay = ['一', '二', '三', '四'], holidayDay = ['五', '六', '日'];
       const normalDayPrice = calculateRoomPrice(normalDay, this.normalDayCost, selectedDays);
       const holidayDayPrice = calculateRoomPrice(holidayDay, this.holidayCost, selectedDays);
@@ -192,17 +192,19 @@ export default {
     },
     normalDays() {
       const normalDay = ['一', '二', '三', '四'];
-      return getSelectedDays(this.start, this.end).reduce((total, day) => {
+      const day = getSelectedDays(this.checkIn, this.checkOut).reduce((total, day, index) => {
         let isNormalDay = normalDay.find(normal => normal == day);
-        if (!isNormalDay) return total;
+        const lastIndex = getSelectedDays(this.checkIn, this.checkOut).length - 1;
+        if (!isNormalDay || index == lastIndex) return total;
         
         total += 1;
         return total;
       }, 0);  
+      return day;
     },
     selectedPeriodOfDays() {
-      const selectedDays = getSelectedDays(this.start, this.end);
-      return selectedDays.length + 1;
+      const selectedDays = getSelectedDays(this.checkIn, this.checkOut);
+      return selectedDays.length;
     }
   },
   components: {
