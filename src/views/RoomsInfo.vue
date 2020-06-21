@@ -153,6 +153,7 @@ export default {
         : this.imgIndex
     },
     getDateItem(event) {
+      if (event.target.nodeName !== 'SPAN') return;
       this.dateItem.push(event.target);
       this.addBackgroundColorToDateItems();
     },
