@@ -137,8 +137,8 @@ export default {
   },
   data() {
     return {
-      name: 'aa',
-      telephone: '0952555421',
+      name: '',
+      telephone: '',
     }
   },
   methods: {
