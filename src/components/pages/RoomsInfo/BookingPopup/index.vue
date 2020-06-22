@@ -34,7 +34,7 @@
               @input="checkOutHandler($event)"
               locale="en-US"
               :masks="{ weekdays: 'WW', L: 'YYYY - MM - DD' }"
-              :available-dates='{ start: useCalculateDays(checkIn, checkOut), end: null }'
+              :available-dates='{ start: useCalculateDays(checkIn), end: null }'
             )
             p.days {{ selectedPeriodOfDays }}天，{{ normalDays }}晚平日
             div.price
@@ -146,8 +146,6 @@ export default {
 
     }),
     closePupop() {
-      this.$emit('propBookingPopupDateHandler', 'checkOut', calculateDays(new Date(), 1)); 
-      this.$emit('propBookingPopupDateHandler', 'checkIn',  calculateDays(new Date(), 2));
       this.$emit('propBookingPopup');
     },
     checkOutHandler(date) {
@@ -156,15 +154,11 @@ export default {
     checkInHandler(date) {
       this.$emit('propBookingPopupDateHandler', 'checkIn', date);
     },
-    useCalculateDays(checkIn, checkOut) {
-      if (!checkOut) return calculateDays(checkIn, 1);
-      else {
-        const num = periodOfDays(checkIn, checkOut);
-        return calculateDays(checkIn, num);
-      }
+    useCalculateDays(checkIn) {
+      return calculateDays(checkIn, 1);
     },
     emitBookingFormHandler() {
-      const date = calculatePeriodOfDays(this.start, this.end);
+      const date = calculatePeriodOfDays(this.checkIn, this.checkOut);
       const id = this.$route.params.id;
       const postObj = {
         id,
@@ -215,16 +209,17 @@ export default {
     ArrowButton,
   },
   watch: {
-    checkIn(value) {
-      this.bookingPopup
-        ? this.start
-        : this.start = this.checkIn
-    },
-    checkOut(value) {
-      this.bookingPopup
-        ? this.end
-        : this.end = this.checkOut
-    }
+    // checkIn(value) {
+    //   console.log('Output: checkIn -> value', value)
+    //   this.bookingPopup
+    //     ? this.start
+    //     : this.start = this.checkIn
+    // },
+    // checkOut(value) {
+    //   this.bookingPopup
+    //     ? this.end
+    //     : this.end = this.checkOut
+    // }
   },
   filters: {
     currencyComma(value) {

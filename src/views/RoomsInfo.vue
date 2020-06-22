@@ -62,13 +62,13 @@
       :singleRoomName="singleRoomName"
       :roomSpecification="roomSpecification(singleRoomName)"
       :roomAmentities="roomAmentities"
-      :checkIn="bookingPopupDate.checkIn"
-      :checkOut="bookingPopupDate.checkOut"
+      :checkIn="checkIn"
+      :checkOut="checkOut"
       :bookingPopup="bookingPopup"
       :normalDayCost="roomPrice.normalDayPrice || 0"
       :holidayCost="roomPrice.holidayPrice || 0" 
       @propBookingPopupDateHandler="propBookingPopupDateHandler"
-      @propBookingPopup="bookingPopup = false"
+      @propBookingPopup="propBookingPopup"
       @propBookingRoomHandler="propBookingRoomHandler"
       @propClickToCloseReservationPopup="showReservationPopup = true"
     )
@@ -125,8 +125,8 @@ export default {
         end: calculateDays(new Date(), 2)
       },
       bookingPopupDate: {
-        checkIn: calculateDays(new Date(), 1),
-        checkOut: calculateDays(new Date(), 2) 
+        checkIn: '',
+        checkOut: ''
       },
       dateItem: [],
       bookingPopup: false,
@@ -186,6 +186,8 @@ export default {
       const { status } = res;
       if (status == 200 || status == 400) {
         this.showReservationPopup = true;
+        this.bookingPopupDate.checkIn = '';
+        this.bookingPopupDate.checkOut = '';
         this.bookingPopup = false;
       }
     },
@@ -209,15 +211,20 @@ export default {
       }
     },
     showPopupAndAsyncDate() {
-      if (
-        new Date(this.range.start).getDate() != 
-        new Date(this.bookingPopupDate.checkIn).getDate()
-      ) {
-        this.bookingPopupDate.checkIn = this.range.start;
-        this.bookingPopupDate.checkOut = this.range.end;
-      }
+    //   if (
+    //     new Date(this.range.start).getDate() != 
+    //     new Date(this.bookingPopupDate.checkIn).getDate()
+    //   ) {
+    //     this.bookingPopupDate.checkIn = this.range.start;
+    //     this.bookingPopupDate.checkOut = this.range.end;
+    //   }
       this.bookingPopup = true;
-    } 
+    },
+    propBookingPopup() {
+      this.bookingPopupDate.checkIn = '';
+      this.bookingPopupDate.checkOut = '';
+      this.bookingPopup = false;
+    }
   },
   computed: {
     ...mapGetters({
@@ -243,6 +250,20 @@ export default {
       const holidayDayPrice = calculateRoomPrice(holidayDay, holidayDayCost, selectedDays);
       const getTotalPrice = calculatePrice(holidayDayPrice, normalDayPrice);
       return getTotalPrice;
+    },
+    checkIn() {
+      if (!this.bookingPopupDate.checkIn) {
+        return this.range.start;
+      } else {
+        return this.bookingPopupDate.checkIn;
+      }
+    },
+    checkOut() {
+      if (!this.bookingPopupDate.checkOut) {
+        return this.range.end;
+      } else {
+        return this.bookingPopupDate.checkOut;
+      }
     }
   },
   components: {
