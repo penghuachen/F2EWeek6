@@ -208,19 +208,7 @@ export default {
     BookingProcess,
     ArrowButton,
   },
-  watch: {
-    // checkIn(value) {
-    //   console.log('Output: checkIn -> value', value)
-    //   this.bookingPopup
-    //     ? this.start
-    //     : this.start = this.checkIn
-    // },
-    // checkOut(value) {
-    //   this.bookingPopup
-    //     ? this.end
-    //     : this.end = this.checkOut
-    // }
-  },
+  watch: {},
   filters: {
     currencyComma(value) {
       return formatCurrency(value);

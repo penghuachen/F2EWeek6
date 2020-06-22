@@ -211,13 +211,6 @@ export default {
       }
     },
     showPopupAndAsyncDate() {
-    //   if (
-    //     new Date(this.range.start).getDate() != 
-    //     new Date(this.bookingPopupDate.checkIn).getDate()
-    //   ) {
-    //     this.bookingPopupDate.checkIn = this.range.start;
-    //     this.bookingPopupDate.checkOut = this.range.end;
-    //   }
       this.bookingPopup = true;
     },
     propBookingPopup() {
